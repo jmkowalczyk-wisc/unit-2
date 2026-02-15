@@ -29,8 +29,8 @@ circle.bindPopup("I am a circle.");
 polygon.bindPopup("I am a polygon.");
 
 var popup = L.popup() // Initializes a standalone popup.
-    .setLatLng([51.513, -0.09])  // Sets coordinate of popup
-    .setContent("I am a standalone popup.") // Sets text contetn of popup
+    .setLatLng([51.513, -0.09])  // Sets coordinate of popup.
+    .setContent("I am a standalone popup.") // Sets the content of popup.
     .openOn(map); // .openOn() will add the popup to the map and open it. If another popup is already open, it will be closed.
 
 // Map clicks send events, which can be listened to the .on() method.
