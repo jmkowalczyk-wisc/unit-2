@@ -7,14 +7,14 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map); // Adds the tile layer to the map. .addTo(map) will always be used to add a feature to the map.
 
 // Fetch data with AJAX, then initialize a styling variable, then add a geojson leaflet layer.
-fetch("data/MegaCities.geojson")
+fetch("data/ElectricityGenRenewPercent.geojson")
     .then(function(response){
         return response.json();
     })
     .then(function(json){
         var geojsonMarkerStyle = {
             radius: 8,
-            fillColor: '#70f',
+            fillColor: '#dd0',
             color: '#000',
             weight: 1,
             fillOpacity: 0.5
