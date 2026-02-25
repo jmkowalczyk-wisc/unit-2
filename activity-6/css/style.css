@@ -1,7 +1,18 @@
 /* Lab 1 Stylesheet - Joseph Kowalczyk, 2026*/
+/* Leaflet Map*/
 #map {
     width: 60%; 
     height: 560px;
+}
+
+/* Sequence slider */
+#panel {
+    width: 16%;
+    padding: 20px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    line-height: 42px;
 }
 
 /* Targets all <p> tags in Leaflet popups. Sets the top and bottom margins to 0.2, and the left and right margins to 0. */

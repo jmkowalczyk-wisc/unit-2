@@ -33,10 +33,10 @@ function calculatePropRadius(attValue){
     return radius;
 };
 
-// Step 3: Add circle markers for point features to the map.
+// Add circle markers for point features to the map.
 function pointToLayer(feature, latlng){
 
-    // Step 4: Determine attribute to scale proportional symbols
+    // Determine attribute to scale proportional symbols
     var attribute = "2014"
 
     var geojsonMarkerStyle = {
@@ -47,10 +47,10 @@ function pointToLayer(feature, latlng){
         fillOpacity: 0.5
     };
 
-    // Step 5: For each feature, determine its value for the selected attribute
+    // For each feature, determine its value for the selected attribute
     var attValue = Number(feature.properties[attribute]);
 
-    // Step 6: Give each feature's circle marker a radius based on its attribute value
+    // Give each feature's circle marker a radius based on its attribute value
     geojsonMarkerStyle.radius = calculatePropRadius(attValue);
 
     // Create circle markers
@@ -74,7 +74,19 @@ function createPropSymbols(data, map){
     }).addTo(map);
 };
 
-// Step 2: Import GeoJSON Data
+// Start of sequence control implementation
+// Create new sequence controls
+function createSequenceControls(){
+    var slider = "<input class='range-slider' type='range'></input>" // Creating the slider input element
+    document.querySelector("#panel").insertAdjacentHTML('beforeend', slider) // Adding the input element to the HTML
+    // Set slider attributes
+    document.queryselector('.range-slider').max = 6; // Maximum value the slider can take
+    document.queryselector('.range-slider').min = 0; // Minimum value the slider can take
+    document.queryselector('.range-slider').value = 0; // The value the slider starts with
+    document.queryselector('.range-slider').step = 1; // How much the slider value increments per step
+};
+
+// Import GeoJSON Data
 function addData(map){
     // Fetch data with AJAX, then pass the response to a callback function to create marker options and initialize a geojson layer
     fetch("data/ElectricityGenRenewPercent.geojson") // Retrieve lab 1 data...
@@ -84,6 +96,7 @@ function addData(map){
         .then(function(json){
             minVal = calculateMinVal(json); // Then calculate the minimum value as per the calculateMinVal function...
             createPropSymbols(json, map); // Create proportional symbols, based on the value from calculateMinVal()
+            createSequenceControls();
         });
 };
 
