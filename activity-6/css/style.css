@@ -1,2 +1,10 @@
-/*Add CSS styles here*/
-#map {width: 60%; height: 560px;}
+/* Lab 1 Stylesheet - Joseph Kowalczyk, 2026*/
+#map {
+    width: 60%; 
+    height: 560px;
+}
+
+/* Targets all <p> tags in Leaflet popups. Sets the top and bottom margins to 0.2, and the left and right margins to 0. */
+.leaflet-popup-content p { 
+    margin: 0.2em 0;
+}

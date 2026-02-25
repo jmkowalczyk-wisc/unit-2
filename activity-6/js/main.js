@@ -34,7 +34,7 @@ function calculatePropRadius(attValue){
 };
 
 // Step 3: Add circle markers for point features to the map.
-function createPropSymbols(data){
+function pointToLayer(feature, latlng){
 
     // Step 4: Determine attribute to scale proportional symbols
     var attribute = "2014"
@@ -47,28 +47,43 @@ function createPropSymbols(data){
         fillOpacity: 0.5
     };
 
+    // Step 5: For each feature, determine its value for the selected attribute
+    var attValue = Number(feature.properties[attribute]);
+
+    // Step 6: Give each feature's circle marker a radius based on its attribute value
+    geojsonMarkerStyle.radius = calculatePropRadius(attValue);
+
+    // Create circle markers
+    var layer = L.circleMarker(latlng, geojsonMarkerStyle);
+
+    // Create content of popups for the markers
+    var popupContent = "<p><b>Country:</b> " + feature.properties.country + '</p><p><b>Renewable Percentage of Electricity Generation in ' + attribute + ':</b> ' + feature.properties[attribute] + '%</p>';
+
+    // Bind popup to circle marker
+    layer.bindPopup(popupContent, {
+        offset: new L.Point(0, -geojsonMarkerStyle.radius)
+    });
+
+    // Return the circle marker to L.geojson pointToLayer.
+    return layer;
+};
+
+function createPropSymbols(data, map){
     L.geoJson(data, { // Create a geojson layer, use pointToLayer to add the points to the map, then uses onEachFeature to add popups.
-        pointToLayer: function (feature, latlng){
-            // Step 5: For each feature, determine its value for the selected attribute
-            var attValue = Number(feature.properties[attribute]);
-            // Step 6: Give each feature's circle marker a radius based on its attribute value
-            geojsonMarkerStyle.radius = calculatePropRadius(attValue);
-            // Create circle markers
-            return L.circleMarker(latlng, geojsonMarkerStyle);
-        },
+        pointToLayer: pointToLayer
     }).addTo(map);
 };
 
 // Step 2: Import GeoJSON Data
 function addData(map){
     // Fetch data with AJAX, then pass the response to a callback function to create marker options and initialize a geojson layer
-    fetch("data/ElectricityGenRenewPercent.geojson")
+    fetch("data/ElectricityGenRenewPercent.geojson") // Retrieve lab 1 data...
         .then(function(response){
-            return response.json();
+            return response.json(); // Then return the retrieved data in .json format...
         })
         .then(function(json){
-            minVal = calculateMinVal(json);
-            createPropSymbols(json);
+            minVal = calculateMinVal(json); // Then calculate the minimum value as per the calculateMinVal function...
+            createPropSymbols(json, map); // Create proportional symbols, based on the value from calculateMinVal()
         });
 };
 
