@@ -34,10 +34,10 @@ function calculatePropRadius(attValue){
 };
 
 // Add circle markers for point features to the map.
-function pointToLayer(feature, latlng){
+function pointToLayer(feature, latlng, attributes){
 
     // Determine attribute to scale proportional symbols
-    var attribute = "2014"
+    var attribute = attributes[0];
 
     var geojsonMarkerStyle = {
         radius: 8,
@@ -68,19 +68,22 @@ function pointToLayer(feature, latlng){
     return layer;
 };
 
-function createPropSymbols(data, map){
+function createPropSymbols(data, attributes){
     L.geoJson(data, { // Create a geojson layer, use pointToLayer to add the points to the map, then uses onEachFeature to add popups.
-        pointToLayer: pointToLayer
+        pointToLayer: function(feature, latlng){
+            return pointToLayer(feature, latlng, attributes);
+        }
     }).addTo(map);
 };
 
 // Start of sequence control implementation
 // Create new sequence controls
-function createSequenceControls(){
+// createSequenceControls needs to be passed the list of attributes as a parameter in order for the slider/buttons to change the markers and the popup.
+function createSequenceControls(attributes){
     var slider = "<input class='range-slider' type='range'></input>" // Creating the slider input element
     document.querySelector("#panel").insertAdjacentHTML('beforeend', slider) // Adding the input element to the HTML
     // Set slider attributes
-    document.querySelector('.range-slider').max = 6; // Maximum value the slider can take
+    document.querySelector('.range-slider').max = 9; // Maximum value the slider can take
     document.querySelector('.range-slider').min = 0; // Minimum value the slider can take
     document.querySelector('.range-slider').value = 0; // The value the slider starts with
     document.querySelector('.range-slider').step = 1; // How much the slider value increments per step
@@ -91,19 +94,91 @@ function createSequenceControls(){
     // Replace buttons with images
     document.querySelector('#reverse').insertAdjacentHTML('beforeend',"<img src='img/back.png'>")
     document.querySelector('#forward').insertAdjacentHTML('beforeend',"<img src='img/forward.png'>")
+
+    // Click listener for buttons
+    document.querySelectorAll('.step').forEach(function(step){
+        step.addEventListener("click", function(){
+            var index = document.querySelector('.range-slider').value
+            if (step.id == 'forward'){
+                index++;
+                // If past the last attribute, wrap around to first attribute
+                index = index > 9 ? 0 : index;
+            } else if (step.id == 'reverse'){
+                index--;
+                // If past the first attribute, wrap around to last attribute
+                index = index < 0 ? 9 : index;
+            };
+
+            // Update slider
+            document.querySelector('.range-slider').value = index;
+
+            // Pass new attribute to update symbols
+            updatePropSymbols(attributes[index]);
+        })
+    })
+
+    // Input listener for slider
+    document.querySelector('.range-slider').addEventListener('input', function(){            
+        var index = this.value; // Set variable index to the current value of the slider.
+
+        // Pass new attribute to update symbols
+        updatePropSymbols(attributes[index]);
+    });
+};
+
+// Create array of attributes to iterate through ith the slider
+function processData(data){
+    //Empty array to hold attributes
+    var attributes = [];
+
+    //Properties of the first feature in the lab 1 data
+    var properties = data.features[0].properties;
+
+    //Push each attribute name into attributes array
+    for (var attribute in properties){
+        // Only take attributes with year values. Years in the Lab 1 data do not have a common prefix string, and are only numbers.
+        if (!attribute.includes('country') && !attribute.includes('lat') && !attribute.includes('lon')){
+            attributes.push(attribute);
+        };
+    };
+    return attributes;
+};
+
+function updatePropSymbols(attribute){
+    map.eachLayer(function(layer){
+        if (layer.feature && layer.feature.properties[attribute]){ // Checks for existence of the layer, and the selected property in the layer feature's properties.
+            //access feature properties
+            var properties = layer.feature.properties;
+
+            //update each feature's radius based on new attribute values
+            var radius = calculatePropRadius(properties[attribute]);
+            layer.setRadius(radius);
+
+            //add city to popup content string
+            var popupContent = "<p><b>Country:</b> " + properties.country + "</p>";
+
+            //add formatted attribute to panel content string
+            var year = attribute.toString();
+            popupContent += "<p><b>Renewable Percentage of Electricity Generation in " + year + ":</b> " + properties[attribute] + "%</p>";
+
+            //update popup content            
+            popup = layer.getPopup();            
+            popup.setContent(popupContent).update();
+        };
+    });
 };
 
 // Import GeoJSON Data
 function addData(map){
-    // Fetch data with AJAX, then pass the response to a callback function to create marker options and initialize a geojson layer
     fetch("data/ElectricityGenRenewPercent.geojson") // Retrieve lab 1 data...
         .then(function(response){
             return response.json(); // Then return the retrieved data in .json format...
         })
         .then(function(json){
+            var attributes = processData(json); // Create array of attributes for slider
             minVal = calculateMinVal(json); // Then calculate the minimum value as per the calculateMinVal function...
-            createPropSymbols(json, map); // Create proportional symbols, based on the value from calculateMinVal()
-            createSequenceControls();
+            createPropSymbols(json, attributes); // Create proportional symbols, based on the value from calculateMinVal()
+            createSequenceControls(attributes);
         });
 };
 
