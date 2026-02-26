@@ -178,7 +178,7 @@ function addData(map){
             var attributes = processData(json); // Create array of attributes for slider
             minVal = calculateMinVal(json); // Then calculate the minimum value as per the calculateMinVal function...
             createPropSymbols(json, attributes); // Create proportional symbols, based on the value from calculateMinVal()
-            createSequenceControls(attributes);
+            createSequenceControls(attributes); // Create sequence slider and buttons. Needs to be passed attributes in order to change the map.
         });
 };
 
