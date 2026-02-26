@@ -80,10 +80,17 @@ function createSequenceControls(){
     var slider = "<input class='range-slider' type='range'></input>" // Creating the slider input element
     document.querySelector("#panel").insertAdjacentHTML('beforeend', slider) // Adding the input element to the HTML
     // Set slider attributes
-    document.queryselector('.range-slider').max = 6; // Maximum value the slider can take
-    document.queryselector('.range-slider').min = 0; // Minimum value the slider can take
-    document.queryselector('.range-slider').value = 0; // The value the slider starts with
-    document.queryselector('.range-slider').step = 1; // How much the slider value increments per step
+    document.querySelector('.range-slider').max = 6; // Maximum value the slider can take
+    document.querySelector('.range-slider').min = 0; // Minimum value the slider can take
+    document.querySelector('.range-slider').value = 0; // The value the slider starts with
+    document.querySelector('.range-slider').step = 1; // How much the slider value increments per step
+
+    // Add step buttons
+    document.querySelector('#panel').insertAdjacentHTML('beforeend','<button class="step" id="reverse"></button>');
+    document.querySelector('#panel').insertAdjacentHTML('beforeend','<button class="step" id="forward"></button>');
+    // Replace buttons with images
+    document.querySelector('#reverse').insertAdjacentHTML('beforeend',"<img src='img/back.png'>")
+    document.querySelector('#forward').insertAdjacentHTML('beforeend',"<img src='img/forward.png'>")
 };
 
 // Import GeoJSON Data
