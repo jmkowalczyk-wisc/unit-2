@@ -147,6 +147,22 @@ function createSequenceControls(attributes){
     });
 };
 
+function createLegend(attributes){
+    var LegendControl = L.Control.extend({
+        options: {position: 'bottomright'},
+
+        onAdd: function() {
+            // Create control container with a class name
+            var container = L.DomUtil.create('div', 'legend-control-container');
+
+            container.insertAdjacentHTML('beforeend', '<p class="temporalLegend">Renewable Electricity Generation Proportion in <span class="year">2014</span></p>')
+            
+            return container;
+        }
+    });
+
+    map.addControl(new LegendControl());
+};
 
 // Create array of attributes to iterate through ith the slider
 function processData(data){
@@ -169,19 +185,23 @@ function processData(data){
 function updatePropSymbols(attribute){
     map.eachLayer(function(layer){
         if (layer.feature && layer.feature.properties[attribute]){ // Checks for existence of the layer, and the selected property in the layer feature's properties.
-            //access feature properties
+            // Access feature properties
             var properties = layer.feature.properties;
 
-            //update each feature's radius based on new attribute values
+            // Update each feature's radius based on new attribute values
             var radius = calculatePropRadius(properties[attribute]);
             layer.setRadius(radius);
 
-            //add city to popup content string
+            // Add city to popup content string
             var popupContent = createPopupContent(properties, attribute);
 
-            //update popup content            
+            // Update popup content            
             popup = layer.getPopup();            
             popup.setContent(popupContent).update();
+
+            // Update legend
+            var year = document.querySelector('.temporalLegend .year'); // Select the year class inside of the temporalLegend class.
+            year.textContent = attribute; // Change DOM element to the current attribute, which is a year.
         };
     });
 };
@@ -197,6 +217,7 @@ function addData(map){
             minVal = calculateMinVal(json); // Then calculate the minimum value as per the calculateMinVal function...
             createPropSymbols(json, attributes); // Create proportional symbols, based on the value from calculateMinVal()
             createSequenceControls(attributes); // Create sequence slider and buttons. Needs to be passed attributes in order to change the map.
+            createLegend(attributes); // Create temporal legend. Needs to be passed attributes in order to display stats.
         });
 };
 
