@@ -88,20 +88,33 @@ function createPropSymbols(data, attributes){
 // Create new sequence controls
 // createSequenceControls needs to be passed the list of attributes as a parameter in order for the slider/buttons to change the markers and the popup.
 function createSequenceControls(attributes){
-    var slider = "<input class='range-slider' type='range'></input>" // Creating the slider input element
-    document.querySelector("#panel").insertAdjacentHTML('beforeend', slider) // Adding the input element to the HTML
-    // Set slider attributes
+    var SequenceControl = L.Control.extend({
+        options: {position: 'bottomleft'},
+        
+        onAdd: function() {
+            // Create control container div with a class name
+            var container = L.DomUtil.create('div', 'sequence-control-container');
+
+            //Create range slider
+            container.insertAdjacentHTML('beforeend', "<input class='range-slider' type='range'>")
+
+            // Create navigation buttons
+            container.insertAdjacentHTML('beforeend','<button class="step" id="reverse"><img src = "img/back.png"></button>');
+            container.insertAdjacentHTML('beforeend','<button class="step" id="forward"><img src = "img/forward.png"></button>');
+
+            // Disable mouse event listeners for the container, prevents moving map while interacting with the controls
+            L.DomEvent.disableClickPropagation(container);
+            return container;
+        }
+    });
+
+    map.addControl(new SequenceControl()); // Adds slider and button controls via leaflet contstructor
+
+    // Slider attributes
     document.querySelector('.range-slider').max = 9; // Maximum value the slider can take
     document.querySelector('.range-slider').min = 0; // Minimum value the slider can take
     document.querySelector('.range-slider').value = 0; // The value the slider starts with
     document.querySelector('.range-slider').step = 1; // How much the slider value increments per step
-
-    // Add step buttons
-    document.querySelector('#panel').insertAdjacentHTML('beforeend','<button class="step" id="reverse"></button>');
-    document.querySelector('#panel').insertAdjacentHTML('beforeend','<button class="step" id="forward"></button>');
-    // Replace buttons with images
-    document.querySelector('#reverse').insertAdjacentHTML('beforeend',"<img src='img/back.png'>")
-    document.querySelector('#forward').insertAdjacentHTML('beforeend',"<img src='img/forward.png'>")
 
     // Click listener for buttons
     document.querySelectorAll('.step').forEach(function(step){
@@ -133,6 +146,7 @@ function createSequenceControls(attributes){
         updatePropSymbols(attributes[index]);
     });
 };
+
 
 // Create array of attributes to iterate through ith the slider
 function processData(data){
