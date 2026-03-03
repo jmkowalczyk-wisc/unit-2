@@ -22,8 +22,29 @@
 
     <body>
         <!--put your initial page content here-->
+        <p id="title">How <span id='green'>Renewable</span> is our Electricity?</p>
+        <p id="subtitle">A spatiotemporal presentation of the percentage of renewable electricity generation compared to total electricity generation.</p>
+        <p id="subtitle">by Joseph Kowalczyk, last updated 3/3/2026</p>
+
         <div id="map"></div>
-        <div id="panel"></div>
+
+        <h3>What is this data?</h3>
+        <p>The International Renewable Energy Agency (IRENA) is a multinational agency that supports countries in their transitions to renewable energy generation, and overall drives the widespread use of sustainable renewable energy. According to their website, their membership includes 170+ countries and the European Union, which collectively drives IRENA's direction.</p>
+        <p>The data contained in this map was obtained from their public data query tool, IRENASTAT. While, ideally, this data would include the past ten years of data, I was only able to obtain data for nine years, from 2014 to 2023. As of March 3, 2026, data has not been provided for 2024 and beyond.</p>
+        
+        <h3>Why these countries?</h3>
+        <p>The following list are the countries represented in this map:</p>
+        <ul id="countrylist"></ul>
+        <p>While not strictly following the order, these countries are roughly the top fifteen countries in the amount of renewable electricity they produce. I believe the countries I picked are both representative of the leaders in renewable electricity generation, while also providing a fair spread across the continents of concern.</p>
+        
+        <h3>Why map this data?</h3>
+        <p>While this map could potentially be used to argue for increased focus on renewable energy initiatives in countries that lack it, I made this map as a kind of "good news" kind of map. Things are a bit bleak as of writing this, and I hope this map shows how far we as a people have progressed in the matter of renewable, non-polluting electricity sources.</p>
+
+        <h3>Interesting Outliers</h3>
+        <p>While procuring the data, I found a few interesting anomalies from the average that I would like to mention here.</p>
+        <ul>
+            <li>Norway's energy generation is notably high compared to every other country; it remains above 95% for the entire time series! The grand majority of this generation comes from hydroelectric power, from 1791 hydropower plants and covering 88% of the total production capacity. The other ~11% comes from 65 wind farms across the country. <a href=https://energifaktanorge.no/en/norsk-energiforsyning/kraftproduksjon/>(Source)</a></li>
+        </ul>
         <!--you can also use this space for internal scripts;
         place these within <script> tags-->
 

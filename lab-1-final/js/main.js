@@ -2,13 +2,21 @@
 var map; // Map variable, allows layers to be added at any scope
 var minVal; // Minimum value for proportional symbols
 
-// Step 1 - Create Leaflet Map
+// Create Leaflet Map
 function mapInit(){
-    map = L.map('map').setView([0, 0], 2);
+    var southWest = L.latLng(-85, -180);
+    var northEast = L.latLng(85, 180);
+    var bounds = L.latLngBounds(southWest, northEast)
+    map = L.map('map', {
+        maxBounds: bounds,
+        maxBoundsViscosity: 1.0
+    }).setView([30, 0], 3);
 
     // Add a tile layer basemap using OpenStreetMap tiles, and attribute OpenStreetMap.
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://www.irena.org/Data">IRENA (International Renewable Energy Agency)</a>',
+        minZoom: 3,
+        maxZoom: 5
     }).addTo(map); // Adds the tile layer to the map. .addTo(map) will always be used to add a feature to the map.
 
     // Call addData, loading Lab 1 data and creating markers.
@@ -149,20 +157,24 @@ function createSequenceControls(attributes){
 
 function createLegend(attributes){
     var LegendControl = L.Control.extend({
-        options: {position: 'bottomright'},
+        options: { position: 'bottomright' },
 
         onAdd: function() {
-            // Create control container with a class name
-            var container = L.DomUtil.create('div', 'legend-control-container');
+            var container = L.DomUtil.create('div', 'legend-control-container'); // Initialize container
+            container.innerHTML = '<p class="temporalLegend">Renewable Electricity '+ 'Generation Proportion in <span class="year">2014</span></p>'; //Add header text, updates with slider
 
-            container.insertAdjacentHTML('beforeend', '<p class="temporalLegend">Renewable Electricity Generation Proportion in <span class="year">2014</span></p>')
-            
+            // Start attribute legend svg string
+            var svg = '<svg id="attribute-legend" width="130px" height="130px">';
+
+            // Add attribute-legend svg to container
+            container.innerHTML += svg;
+
             return container;
         }
     });
 
     map.addControl(new LegendControl());
-};
+}
 
 // Create array of attributes to iterate through ith the slider
 function processData(data){

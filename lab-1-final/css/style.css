@@ -1,4 +1,38 @@
 /* Lab 1 Stylesheet - Joseph Kowalczyk, 2026*/
+/* Title, subtitle, supplementary text */
+
+p, li, h3 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#green {
+    color: green;
+}
+
+#title {
+    text-align: center;
+    display: block;
+    font-size: 2em;
+    font-weight: bold;
+    margin-block: 0.67em;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#subtitle {
+    text-align: center;
+    display: block;
+    font-size: 1.25em;
+    font-weight: bold;
+    margin-block: 0.83em;
+    color: gray;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#supplement {
+    width: 60%;
+    text-align: center;
+}
+
 /* Leaflet Map*/
 #map {
     width: 100%; 
@@ -36,13 +70,13 @@
 
 /* Legend Container */
 .legend-control-container {
-    width: 350px;
-    height: 30px;
-    background-color: rgba(255,255,255,0.8);  
-    padding: 10px;  
-    line-height: 45px;  
-    text-align: center;  
-    border: solid gray 1px;  
+    width: 150px;
+    /*height: 200px;*/
+    font-weight: bold;
+    background-color: rgba(255,255,255,0.8);
+    padding: 10px;
+    text-align: center;
+    border: solid gray 1px;
 }
 
 /* Targets all <p> tags in Leaflet popups. Sets the top and bottom margins to 0.2, and the left and right margins to 0. */
