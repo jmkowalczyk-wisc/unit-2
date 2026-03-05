@@ -1,6 +1,6 @@
 // main.js - Joseph Kowalczyk
 var map; // Map variable, allows layers to be added at any scope
-var minVal; // Minimum value for proportional symbols
+var dataStats = {}; // JSON object to store minimum, maximum, and mean of the dataset
 
 // Create Leaflet Map
 function mapInit(){
@@ -23,7 +23,7 @@ function mapInit(){
     addData(map);
 }
 
-function calculateMinVal(data){
+function calcStats(data){
     var allVals = []; // Blank array to store all data values
     for (var country of data.features){ // For each country feature of the data...
         for (var year = 2014; year <= 2023; year += 1) { // For each year between 2014 and 2023...
@@ -31,13 +31,17 @@ function calculateMinVal(data){
             allVals.push(val) // Push the current value to the allVals array
         };
     };
-    var minVal = Math.min(...allVals); // Find the smallest value in the allVals array. ... is a spread operator, treating an array like allVals into multiple elements, allowing Math.min() to function.
-    return minVal;
+    dataStats.min = Math.min(...allVals); // Find the smallest value in the allVals array. ... is a spread operator, treating an array like allVals into multiple elements, allowing Math.min() to function.
+    dataStats.max = Math.max(...allVals); // Likewise, but the largest value.
+
+    // Calculate mean
+    var sum = allVals.reduce(function(a,b) {return a + b}); // Reduces the allVals array to a single value, the aggregated result of the provided function
+    dataStats.mean = sum / allVals.length; // Calculates arithmetic mean of the values.
 };
 
 function calculatePropRadius(attValue){
     var minRadius = 5 // Constant value to adjust symbol sizes above
-    var radius = 1.0083 * Math.pow(attValue / minVal, 0.5715) * minRadius // Flannery Scaling, human eye cannot percieve mathematical proportional scaling
+    var radius = 1.0083 * Math.pow(attValue / dataStats.min, 0.5715) * minRadius // Flannery Scaling, human eye cannot percieve mathematical proportional scaling
     return radius;
 };
 
@@ -92,7 +96,6 @@ function createPropSymbols(data, attributes){
     }).addTo(map);
 };
 
-// Start of sequence control implementation
 // Create new sequence controls
 // createSequenceControls needs to be passed the list of attributes as a parameter in order for the slider/buttons to change the markers and the popup.
 function createSequenceControls(attributes){
@@ -156,9 +159,9 @@ function createSequenceControls(attributes){
 };
 
 // Create temporal and spatial legend
-// Spatial legend pseudocode
+// attribute legend pseudocode
 // Add <svg> element to legend container - DONE
-// Add a <circle> element for the max, min, and mean of the renewable energy proportion
+// Add a <circle> element for the max, min, and mean of the renewable energy proportion - DONE
 // Assign each <circle> element a center and radius based on the above values
 // Create legend text to label circles
 
@@ -171,10 +174,32 @@ function createLegend(attributes){
             container.innerHTML = '<p class="temporalLegend">Renewable Electricity Generation Proportion in <span class="year">2014</span></p>'; //Add header text, updates with slider
 
             // Start attribute legend svg string
-            var svg = '<svg id="attribute-legend" width="130px" height="130px">';
+            var svg = '<svg id="attribute-legend" width="160px" height="60px">';
 
-            // Add attribute-legend svg to container
-            container.innerHTML += svg;
+            // Spatial legend has three circles, array to create said circles
+            var circles = ['max', 'mean', 'min'];
+
+            // Loop to add each circle and text to svg string
+            for (var i = 0; i < circles.length; i++){
+                // Calculate r (radius) and cy (center y) attributes
+                var radius = calculatePropRadius(dataStats[circles[i]]);
+                var cy = 59 - radius;
+
+                //SVG Circle string
+                svg += '<circle class="legend-circle" id="' + circles[i] + '" r="' + radius + '"cy="' + cy + '" fill="#dd0" fill-opacity="0.5" stroke="#000000" cx="30"/>';
+
+                // Define a variable for label spacing
+                var textOffset = i * 20 + 20;
+
+                // Text string for attribute legend
+                svg += '<text id="' + circles[i] + '-text" x="65" y="' + textOffset + '">' + Math.round(dataStats[circles[i]]*100)/100 + "%" + '</text>';
+            };
+
+            // Close svg string
+            svg += '</svg>';
+
+            // Add attribute legend svg to container
+            container.insertAdjacentHTML('beforeend', svg);
 
             return container;
         }
@@ -233,7 +258,7 @@ function addData(map){
         })
         .then(function(json){
             var attributes = processData(json); // Create array of attributes for slider
-            minVal = calculateMinVal(json); // Then calculate the minimum value as per the calculateMinVal function...
+            calcStats(json); // Then calculate the minimum, maximum, and mean of the dataset...
             createPropSymbols(json, attributes); // Create proportional symbols, based on the value from calculateMinVal()
             createSequenceControls(attributes); // Create sequence slider and buttons. Needs to be passed attributes in order to change the map.
             createLegend(attributes); // Create temporal legend. Needs to be passed attributes in order to display stats.
