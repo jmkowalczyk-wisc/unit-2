@@ -4,19 +4,19 @@ var minVal; // Minimum value for proportional symbols
 
 // Create Leaflet Map
 function mapInit(){
-    var southWest = L.latLng(-85, -180);
-    var northEast = L.latLng(85, 180);
-    var bounds = L.latLngBounds(southWest, northEast)
+    var southWest = L.latLng(-85, -180); // Sets a point in the southwestern corner of the map, used in panning boundary
+    var northEast = L.latLng(85, 180); // Likewise, but northeast.
+    var bounds = L.latLngBounds(southWest, northEast) // Combines both prior points into a bounding box
     map = L.map('map', {
-        maxBounds: bounds,
-        maxBoundsViscosity: 1.0
+        maxBounds: bounds, // Sets the maximum bounds to the geometry set earlier
+        maxBoundsViscosity: 1.0 // By default, leaflet eases the user back inside the bounds. Setting this to 1 ensures that the bound is a hard limitation on panning.
     }).setView([30, 0], 3);
 
     // Add a tile layer basemap using OpenStreetMap tiles, and attribute OpenStreetMap.
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://www.irena.org/Data">IRENA (International Renewable Energy Agency)</a>',
-        minZoom: 3,
-        maxZoom: 5
+        minZoom: 3, // Far enough to not loop the map on the east/west edges
+        maxZoom: 5 // Since the data is at a country level, zooming in past that point isn't useful
     }).addTo(map); // Adds the tile layer to the map. .addTo(map) will always be used to add a feature to the map.
 
     // Call addData, loading Lab 1 data and creating markers.
@@ -155,13 +155,20 @@ function createSequenceControls(attributes){
     });
 };
 
+// Create temporal and spatial legend
+// Spatial legend pseudocode
+// Add <svg> element to legend container - DONE
+// Add a <circle> element for the max, min, and mean of the renewable energy proportion
+// Assign each <circle> element a center and radius based on the above values
+// Create legend text to label circles
+
 function createLegend(attributes){
     var LegendControl = L.Control.extend({
         options: { position: 'bottomright' },
 
         onAdd: function() {
             var container = L.DomUtil.create('div', 'legend-control-container'); // Initialize container
-            container.innerHTML = '<p class="temporalLegend">Renewable Electricity '+ 'Generation Proportion in <span class="year">2014</span></p>'; //Add header text, updates with slider
+            container.innerHTML = '<p class="temporalLegend">Renewable Electricity Generation Proportion in <span class="year">2014</span></p>'; //Add header text, updates with slider
 
             // Start attribute legend svg string
             var svg = '<svg id="attribute-legend" width="130px" height="130px">';
