@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
-            <title></title>
+            <title>How Renewable is our Electricity?</title>
 
         <!--put your external stylesheet links here-->
         <link rel="stylesheet" href="css/style.css">
@@ -23,46 +23,53 @@
     <body>
         <!--put your initial page content here-->
         <p id="title">How <span id='green'>Renewable</span> is our Electricity?</p>
-        <p id="subtitle">A spatiotemporal presentation of the percentage of renewable electricity generation compared to total electricity generation.</p>
-        <p id="subtitle">by Joseph Kowalczyk, last updated 3/5/2026</p>
+        <p id="subtitle">A spatiotemporal presentation of the proportion of renewable electricity generation compared to total electricity generation.</p>
+        <p id="subtitle">by Joseph Kowalczyk, last updated 3/6/2026</p>
 
         <div id="map"></div>
+        <div id="supplemental-info">
+            <h3 id='green'>What is this data?</h3>
+            <p>The <a href="https://www.irena.org/">International Renewable Energy Agency (IRENA)</a> is a multinational agency that supports countries in their transitions to renewable energy generation, and overall drives the widespread use of sustainable renewable energy. According to their website, their membership includes 170+ countries and the European Union, which collectively drives IRENA's direction.</p>
+            <p>The data contained in this map was obtained from their public data query tool, <a href="https://www.irena.org/Data/Downloads/IRENASTAT">IRENASTAT</a>. While, ideally, this data would include the past ten years of data, I was only able to obtain data for nine years, from 2014 to 2023. As of March 6, 2026, data has not been provided for 2024 and beyond.</p>
+            
+            <hr>
 
-        <h3>What is this data?</h3>
-        <p>The International Renewable Energy Agency (IRENA) is a multinational agency that supports countries in their transitions to renewable energy generation, and overall drives the widespread use of sustainable renewable energy. According to their website, their membership includes 170+ countries and the European Union, which collectively drives IRENA's direction.</p>
-        <p>The data contained in this map was obtained from their public data query tool, IRENASTAT. While, ideally, this data would include the past ten years of data, I was only able to obtain data for nine years, from 2014 to 2023. As of March 3, 2026, data has not been provided for 2024 and beyond.</p>
-        
-        <h3>Why these countries?</h3>
-        <p>The following list contains the countries represented in this map:</p>
-        <ul>
-            <li>Brazil</li>
-            <li>Canada</li>
-            <li>China</li>
-            <li>Colombia</li>
-            <li>France</li>
-            <li>Germany</li>
-            <li>India</li>
-            <li>Japan</li>
-            <li>Norway</li>
-            <li>Russia</li>
-            <li>Spain</li>
-            <li>Turkey</li>
-            <li>United Kingdom of Great Britain</li>
-            <li>United States of America</li>
-            <li>Venezuela</li>
-        </ul>
-        <p>While not strictly following the order, these countries are roughly the top fifteen countries by the raw amount of renewable electricity they produce in gigawatts (GW). I believe the countries I picked are both representative of the leaders in renewable electricity generation, while also providing a fair spread across the continents visible on the map.</p>
-        
-        <h3>Why map this data?</h3>
-        <p>This map could potentially be used to argue for increased focus on renewable energy initiatives in countries that lack it, such as the United States of America, Russia, and Japan. As a secondary reason, I made this site as a kind of "good news" kind of site, to show off the progress that some larger, notable countries have made in regards to pursuing renewable electricty.</p>
+            <h3 id='green'>Why these countries?</h3>
+            <p>The following list contains the countries represented in this map:</p>
+            <ul>
+                <li>Brazil</li>
+                <li>Canada</li>
+                <li>China</li>
+                <li>Colombia</li>
+                <li>France</li>
+                <li>Germany</li>
+                <li>India</li>
+                <li>Japan</li>
+                <li>Norway</li>
+                <li>Russia</li>
+                <li>Spain</li>
+                <li>Turkey</li>
+                <li>United Kingdom of Great Britain</li>
+                <li>United States of America</li>
+                <li>Venezuela</li>
+            </ul>
+            <p>While not strictly following the order, these countries are roughly the top fifteen countries by the raw amount of renewable electricity they produce in gigawatts (GW). I believe the countries I picked are both representative of the leaders in renewable electricity generation, while also providing a fair spread across the continents visible on the map.</p>
+            
+            <hr>
 
-        <h3>Interesting Data</h3>
-        <p>While obtaining the data, I found a few interesting facts that I would like to mention here, due to a lack of ability to add a chart in Leaflet.</p>
-        <ul>
-            <li>Norway's energy generation is notably high compared to every other country; it remains above 95% for the entire time series! The grand majority of this generation comes from hydroelectric power, from 1791 hydropower plants and covering 88% of the total production capacity. The other ~11% comes from 65 wind farms across the country. <a href=https://energifaktanorge.no/en/norsk-energiforsyning/kraftproduksjon/ target="_blank">(Source)</a></li>
-            <li>Germany, while not greatly exceeding the average, does cross 50% renewable energy generation over the temporal extent of the map. According to a chart made in part by the Fraunhofer Institute for Solar Energy Systems, Germany has a massive spike in solar and wnd energy generation between 2022 and today (2026) <a href=https://www.energy-charts.info/charts/installed_power/chart.htm?l=en&c=DE&year=-1&stacking=stacked_grouped target="_blank">(Source)</a></li>
-            <li>While not entirely reliant on it, a majority of Brazil's renewable energy comes from the Itaipu Dam, the third largest hydroelectric dam in the world. Most interesting is that the dam supplies power to both Brazil and Paraguay, and produces around 80 thousand gigawatt-hours of electricity per year. <a href=https://itaipu.energy/ target="_blank">(Source)</a></li>
-        </ul>
+            <h3 id='green'>Why map this data?</h3>
+            <p>This map could potentially be used to argue for increased focus on renewable energy initiatives in countries that lack it, such as the United States of America, Russia, and Japan. As a secondary reason, I made this site as a "good news" kind of site, to show off the progress that some larger, notable countries have made in regards to pursuing renewable electricty.</p>
+
+            <hr>
+
+            <h3 id='green'>Interesting Data</h3>
+            <p>While obtaining the data, I found a few interesting facts that I would like to mention here, mostly from supplemental sources.</p>
+            <ul>
+                <li>Norway's energy generation is notably high compared to every other country; it remains above 95% for the entire time series! The grand majority of this generation comes from hydroelectric power, from 1791 hydropower plants and covering 88% of the total production capacity. The other ~11% comes from 65 wind farms across the country. <a href=https://energifaktanorge.no/en/norsk-energiforsyning/kraftproduksjon/ target="_blank">(Source)</a></li>
+                <li>Germany, while not greatly exceeding the average, does cross 50% renewable energy generation over the temporal extent of the map. According to a chart made in part by the Fraunhofer Institute for Solar Energy Systems, Germany has a massive spike in solar and wnd energy generation between 2022 and today (2026) <a href=https://www.energy-charts.info/charts/installed_power/chart.htm?l=en&c=DE&year=-1&stacking=stacked_grouped target="_blank">(Source)</a></li>
+                <li>While not entirely reliant on it, a majority of Brazil's renewable energy comes from the Itaipu Dam, the third largest hydroelectric dam in the world. Most interesting is that the dam supplies power to both Brazil and Paraguay, and produces around 80 thousand gigawatt-hours of electricity per year. <a href=https://itaipu.energy/ target="_blank">(Source)</a></li>
+            </ul>
+        </div>
         <!--you can also use this space for internal scripts;
         place these within <script> tags-->
 

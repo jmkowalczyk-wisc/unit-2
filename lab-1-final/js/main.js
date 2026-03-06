@@ -12,9 +12,9 @@ function mapInit(){
         maxBoundsViscosity: 1.0 // By default, leaflet eases the user back inside the bounds. Setting this to 1 ensures that the bound is a hard limitation on panning.
     }).setView([30, 0], 3);
 
-    // Add a tile layer basemap using OpenStreetMap tiles, and attribute OpenStreetMap.
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://www.irena.org/Data">IRENA (International Renewable Energy Agency)</a>',
+    // Add a tile layer basemap using CARTO tiles, and attribute OpenStreetMap and CARTO.
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>, <a href="https://www.irena.org/Data">IRENA (International Renewable Energy Agency)</a>',
         minZoom: 3, // Far enough to not loop the map on the east/west edges
         maxZoom: 5 // Since the data is at a country level, zooming in past that point isn't useful
     }).addTo(map); // Adds the tile layer to the map. .addTo(map) will always be used to add a feature to the map.
