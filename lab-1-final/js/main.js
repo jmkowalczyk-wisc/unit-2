@@ -158,13 +158,7 @@ function createSequenceControls(attributes){
     });
 };
 
-// Create temporal and spatial legend
-// attribute legend pseudocode
-// Add <svg> element to legend container - DONE
-// Add a <circle> element for the max, min, and mean of the renewable energy proportion - DONE
-// Assign each <circle> element a center and radius based on the above values
-// Create legend text to label circles
-
+// Create temporal and attribute legend
 function createLegend(attributes){
     var LegendControl = L.Control.extend({
         options: { position: 'bottomright' },
