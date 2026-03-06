@@ -59,6 +59,7 @@ function pointToLayer(feature, latlng, attributes){
     // Determine attribute to scale proportional symbols
     var attribute = attributes[0];
 
+    // Set styling options for the circle markers
     var geojsonMarkerStyle = {
         radius: 8,
         fillColor: '#dd0',
